@@ -1,0 +1,89 @@
+name: Build Executable
+
+on:
+  push:
+    branches: [ main, master ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+
+    - name: Build executable (directory version)
+      run: python build_exe.py --mode onedir
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: smart-publisher-windows
+        path: dist/智能内容分发助手/
+
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+
+    - name: Build executable
+      run: python build_exe.py --mode onedir
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: smart-publisher-linux
+        path: dist/smart_content_publisher/
+
+  release:
+    needs: [build-windows, build-linux]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+    - name: Download Windows artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: smart-publisher-windows
+        path: release/windows
+
+    - name: Download Linux artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: smart-publisher-linux
+        path: release/linux
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          release/windows/**/**
+          release/linux/**/**
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
