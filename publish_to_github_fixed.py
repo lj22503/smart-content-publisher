@@ -31,57 +31,57 @@ def check_git_installed() -> bool:
     """检查Git是否已安装"""
     code, stdout, stderr = run_command("git --version")
     if code == 0:
-        print("✅ Git已安装:", stdout)
+        print("[OK] Git已安装:", stdout)
         return True
     else:
-        print("❌ Git未安装或不可用")
+        print("[ERR] Git未安装或不可用")
         print("请先安装Git: https://git-scm.com/downloads")
         return False
 
 
 def check_git_config() -> bool:
     """检查Git配置"""
-    print("\n📋 检查Git配置...")
+    print("\n[INFO] 检查Git配置...")
 
     # 检查用户名
     code, username, _ = run_command("git config user.name")
     if code != 0 or not username:
-        print("⚠️  Git用户名未配置")
+        print("[WARN]  Git用户名未配置")
         username = input("请输入Git用户名: ").strip()
         if username:
             run_command(f'git config user.name "{username}"')
         else:
-            print("❌ 必须配置Git用户名")
+            print("[ERR] 必须配置Git用户名")
             return False
 
     # 检查邮箱
     code, email, _ = run_command("git config user.email")
     if code != 0 or not email:
-        print("⚠️  Git邮箱未配置")
+        print("[WARN]  Git邮箱未配置")
         email = input("请输入Git邮箱: ").strip()
         if email:
             run_command(f'git config user.email "{email}"')
         else:
-            print("❌ 必须配置Git邮箱")
+            print("[ERR] 必须配置Git邮箱")
             return False
 
-    print(f"✅ Git配置完成: {username} <{email}>")
+    print(f"[OK] Git配置完成: {username} <{email}>")
     return True
 
 
 def get_github_username() -> str:
     """获取GitHub用户名"""
-    print("\n🔗 配置GitHub仓库")
+    print("\n[LINK] 配置GitHub仓库")
     print("=" * 50)
 
     username = input("请输入你的GitHub用户名: ").strip()
     if not username:
-        print("❌ 必须提供GitHub用户名")
+        print("[ERR] 必须提供GitHub用户名")
         sys.exit(1)
 
     # 验证用户名格式
     if " " in username or "/" in username:
-        print("❌ GitHub用户名不能包含空格或斜杠")
+        print("[ERR] GitHub用户名不能包含空格或斜杠")
         sys.exit(1)
 
     return username
@@ -89,12 +89,12 @@ def get_github_username() -> str:
 
 def add_github_remote(username: str) -> bool:
     """添加GitHub远程仓库"""
-    print("\n📤 添加远程仓库...")
+    print("\n[UPLOAD] 添加远程仓库...")
 
     # 检查是否已存在远程仓库
     code, stdout, _ = run_command("git remote -v")
     if "origin" in stdout:
-        print("✅ 远程仓库已配置:")
+        print("[OK] 远程仓库已配置:")
         print(stdout)
 
         # 询问是否要更新
@@ -107,20 +107,20 @@ def add_github_remote(username: str) -> bool:
 
     # 添加新的远程仓库
     repo_url = f"https://github.com/{username}/smart-content-publisher.git"
-    print(f"📦 仓库URL: {repo_url}")
+    print(f"[BOX] 仓库URL: {repo_url}")
 
     code, _, stderr = run_command(f'git remote add origin "{repo_url}"')
     if code != 0:
-        print(f"❌ 添加远程仓库失败: {stderr}")
+        print(f"[ERR] 添加远程仓库失败: {stderr}")
         return False
 
-    print("✅ 远程仓库添加成功")
+    print("[OK] 远程仓库添加成功")
     return True
 
 
 def create_github_repo_instructions(username: str):
     """显示创建GitHub仓库的指引"""
-    print("\n📝 创建GitHub仓库指引")
+    print("\n[NOTE] 创建GitHub仓库指引")
     print("=" * 50)
     print("请按以下步骤创建GitHub仓库:")
     print()
@@ -138,23 +138,23 @@ def create_github_repo_instructions(username: str):
 
 def push_to_github() -> bool:
     """推送代码到GitHub"""
-    print("\n🚀 推送代码到GitHub...")
+    print("\n[ROCKET] 推送代码到GitHub...")
 
     # 切换到main分支
     code, _, stderr = run_command("git branch -M main")
     if code != 0:
-        print(f"❌ 切换到main分支失败: {stderr}")
+        print(f"[ERR] 切换到main分支失败: {stderr}")
         return False
 
     # 推送代码
-    print("🔄 正在推送代码...")
+    print("[SYNC] 正在推送代码...")
     code, stdout, stderr = run_command("git push -u origin main")
     if code != 0:
-        print(f"❌ 推送失败: {stderr}")
+        print(f"[ERR] 推送失败: {stderr}")
 
         # 如果是认证失败，给出建议
         if "Authentication failed" in stderr or "fatal: invalid credentials" in stderr:
-            print("\n🔑 认证失败解决方案:")
+            print("\n[KEY] 认证失败解决方案:")
             print("1. 确保GitHub仓库已创建")
             print("2. 如果使用双因素认证，需要使用个人访问令牌(PAT)")
             print("3. 生成PAT: GitHub Settings → Developer settings → Personal access tokens")
@@ -164,14 +164,14 @@ def push_to_github() -> bool:
 
         return False
 
-    print("✅ 代码推送成功！")
+    print("[OK] 代码推送成功！")
     print(stdout)
     return True
 
 
 def create_release_tag() -> bool:
     """创建发布标签"""
-    print("\n🏷️  创建发布标签...")
+    print("\n[TAG]  创建发布标签...")
 
     response = input("是否要创建v3.0.0发布标签? (y/N): ").strip().lower()
     if response != "y":
@@ -181,39 +181,39 @@ def create_release_tag() -> bool:
     # 创建标签
     code, _, stderr = run_command('git tag -a v3.0.0 -m "Release version 3.0.0 - Initial MVP"')
     if code != 0:
-        print(f"❌ 创建标签失败: {stderr}")
+        print(f"[ERR] 创建标签失败: {stderr}")
         return False
 
     # 推送标签
     print("推送标签到GitHub...")
     code, stdout, stderr = run_command("git push origin v3.0.0")
     if code != 0:
-        print(f"❌ 推送标签失败: {stderr}")
+        print(f"[ERR] 推送标签失败: {stderr}")
         return False
 
-    print("✅ 标签创建并推送成功！")
+    print("[OK] 标签创建并推送成功！")
     print("GitHub Actions会自动构建可执行文件并创建Release")
     return True
 
 
 def show_next_steps(username: str):
     """显示下一步指引"""
-    print("\n🎉 GitHub发布完成！")
+    print("\n[CELEBRATE] GitHub发布完成！")
     print("=" * 50)
-    print("✅ 代码已推送到GitHub")
-    print(f"📂 仓库地址: https://github.com/{username}/smart-content-publisher")
+    print("[OK] 代码已推送到GitHub")
+    print(f"[FOLDER] 仓库地址: https://github.com/{username}/smart-content-publisher")
     print()
-    print("📋 下一步操作:")
+    print("[INFO] 下一步操作:")
     print("1. 访问你的GitHub仓库查看代码")
     print("2. 进入 Actions 标签查看自动构建状态")
     print("3. 构建完成后可以下载可执行文件")
     print("4. 如果需要创建Release，手动创建或推送标签")
     print()
-    print("🔧 使用方式:")
+    print("[TOOL] 使用方式:")
     print("  直接运行: streamlit run main.py")
     print("  打包使用: python build_exe.py --mode onedir")
     print()
-    print("📞 如有问题，请查看 README.md 和 发布指南.md")
+    print("[PHONE] 如有问题，请查看 README.md 和 发布指南.md")
 
 
 def main():
@@ -259,8 +259,8 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("\n\n⏹️  用户中断操作")
+        print("\n\n[STOP]  用户中断操作")
         sys.exit(0)
     except Exception as e:
-        print(f"\n❌ 发生错误: {e}")
+        print(f"\n[ERR] 发生错误: {e}")
         sys.exit(1)
