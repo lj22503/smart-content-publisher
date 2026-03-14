@@ -166,34 +166,6 @@ git push -u origin main
 - 每次推送或PR时自动构建
 - 创建Release时自动上传构建产物
 
-
-## 🚀 自动发布脚本
-
-已创建一键发布脚本，简化GitHub发布流程：
-
-### 使用方法
-
-```bash
-# 方式一：Python脚本（跨平台）
-python publish_to_github.py
-
-# 方式二：批处理脚本（Windows）
-一键发布到GitHub.bat
-```
-
-**脚本功能**：
-- 检查Git配置
-- 引导创建GitHub仓库
-- 自动配置远程仓库
-- 一键推送代码
-- 可选创建发布标签
-
-**发布流程**：
-1. 运行发布脚本
-2. 按指引创建GitHub仓库
-3. 脚本自动推送代码
-4. GitHub Actions自动构建可执行文件
-
 ## 📄 许可证
 
 MIT License
