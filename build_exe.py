@@ -25,17 +25,24 @@ def build_executable():
         str(main_script),
         "--name=smart_content_publisher",
         "--onefile",  # 打包为单个文件
-        "--windowed",  # 无控制台窗口
+        # "--windowed",  # 无控制台窗口 - 改为控制台应用以便查看Streamlit输出
         "--clean",  # 清理临时文件
         "--noconfirm",  # 不确认覆盖
 
         # 隐藏导入
         "--hidden-import=streamlit",
+        "--hidden-import=streamlit.runtime",
+        "--hidden-import=streamlit.runtime.scriptrunner",
         "--hidden-import=streamlit.runtime.scriptrunner.magic_funcs",
+        "--hidden-import=streamlit.web",
+        "--hidden-import=streamlit.proto",
+        "--hidden-import=streamlit.config",
+        "--hidden-import=asyncio",
         "--hidden-import=rewriter.ai_humanizer",
         "--hidden-import=platforms.wechat",
         "--hidden-import=platforms.feishu",
         "--hidden-import=platforms.xiaohongshu",
+        "--hidden-import=playwright._impl",
 
         # 数据文件
         f"--add-data={base_dir}/ui{os.pathsep}ui",
@@ -78,16 +85,23 @@ def build_directory_version():
         str(main_script),
         "--name=smart_content_publisher",
         "--onedir",  # 打包为目录
-        "--windowed",
+        # "--windowed",  # 改为控制台应用以便查看Streamlit输出
         "--clean",
         "--noconfirm",
 
         "--hidden-import=streamlit",
+        "--hidden-import=streamlit.runtime",
+        "--hidden-import=streamlit.runtime.scriptrunner",
         "--hidden-import=streamlit.runtime.scriptrunner.magic_funcs",
+        "--hidden-import=streamlit.web",
+        "--hidden-import=streamlit.proto",
+        "--hidden-import=streamlit.config",
+        "--hidden-import=asyncio",
         "--hidden-import=rewriter.ai_humanizer",
         "--hidden-import=platforms.wechat",
         "--hidden-import=platforms.feishu",
         "--hidden-import=platforms.xiaohongshu",
+        "--hidden-import=playwright._impl",
 
         f"--add-data={base_dir}/ui{os.pathsep}ui",
         f"--add-data={base_dir}/platforms{os.pathsep}platforms",
