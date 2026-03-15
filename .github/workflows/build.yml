@@ -11,6 +11,8 @@ on:
 jobs:
   build-windows:
     runs-on: windows-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
     - uses: actions/checkout@v4
@@ -25,6 +27,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install pyinstaller
+        playwright install chromium
 
     - name: Build executable (directory version)
       run: python build_exe.py --mode onedir
@@ -33,10 +36,12 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: smart-publisher-windows
-        path: dist/智能内容分发助手/
+        path: dist/smart_content_publisher/
 
   build-linux:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
     - uses: actions/checkout@v4
@@ -51,6 +56,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install pyinstaller
+        playwright install chromium
 
     - name: Build executable
       run: python build_exe.py --mode onedir

@@ -23,7 +23,7 @@ def build_executable():
     # PyInstaller参数
     args = [
         str(main_script),
-        "--name=智能内容分发助手",
+        "--name=smart_content_publisher",
         "--onefile",  # 打包为单个文件
         "--windowed",  # 无控制台窗口
         "--clean",  # 清理临时文件
@@ -76,7 +76,7 @@ def build_directory_version():
 
     args = [
         str(main_script),
-        "--name=智能内容分发助手",
+        "--name=smart_content_publisher",
         "--onedir",  # 打包为目录
         "--windowed",
         "--clean",
@@ -106,7 +106,7 @@ def build_directory_version():
         PyInstaller.__main__.run(args)
         print("\n" + "=" * 50)
         print("打包完成！")
-        print(f"可执行文件位于: {base_dir}/dist/智能内容分发助手/")
+        print(f"可执行文件位于: {base_dir}/dist/smart_content_publisher/")
         print("=" * 50)
         return True
     except Exception as e:
