@@ -29,20 +29,40 @@ def build_executable():
         "--clean",  # 清理临时文件
         "--noconfirm",  # 不确认覆盖
 
-        # 隐藏导入
+        # 隐藏导入 - Streamlit相关
         "--hidden-import=streamlit",
+        "--hidden-import=streamlit.cli",
         "--hidden-import=streamlit.runtime",
         "--hidden-import=streamlit.runtime.scriptrunner",
         "--hidden-import=streamlit.runtime.scriptrunner.magic_funcs",
+        "--hidden-import=streamlit.runtime.state",
+        "--hidden-import=streamlit.runtime.uploaded_file_manager",
         "--hidden-import=streamlit.web",
+        "--hidden-import=streamlit.web.bootstrap",
         "--hidden-import=streamlit.proto",
         "--hidden-import=streamlit.config",
+        "--hidden-import=streamlit.delta_generator",
+        "--hidden-import=streamlit.elements",
+        "--hidden-import=streamlit.components",
+        "--hidden-import=streamlit.caching",
+        # 异步和运行时
         "--hidden-import=asyncio",
+        "--hidden-import=concurrent.futures",
+        "--hidden-import=threading",
+        # 项目模块
         "--hidden-import=rewriter.ai_humanizer",
         "--hidden-import=platforms.wechat",
         "--hidden-import=platforms.feishu",
         "--hidden-import=platforms.xiaohongshu",
+        # Playwright
         "--hidden-import=playwright._impl",
+        "--hidden-import=playwright.async_api",
+        # 其他可能需要的
+        "--hidden-import=pkg_resources.py2_warn",
+        "--hidden-import=pkg_resources.metadata",
+
+        # 收集所有Streamlit模块
+        "--collect-all", "streamlit",
 
         # 数据文件
         f"--add-data={base_dir}/ui{os.pathsep}ui",
@@ -89,19 +109,40 @@ def build_directory_version():
         "--clean",
         "--noconfirm",
 
+        # 隐藏导入 - Streamlit相关
         "--hidden-import=streamlit",
+        "--hidden-import=streamlit.cli",
         "--hidden-import=streamlit.runtime",
         "--hidden-import=streamlit.runtime.scriptrunner",
         "--hidden-import=streamlit.runtime.scriptrunner.magic_funcs",
+        "--hidden-import=streamlit.runtime.state",
+        "--hidden-import=streamlit.runtime.uploaded_file_manager",
         "--hidden-import=streamlit.web",
+        "--hidden-import=streamlit.web.bootstrap",
         "--hidden-import=streamlit.proto",
         "--hidden-import=streamlit.config",
+        "--hidden-import=streamlit.delta_generator",
+        "--hidden-import=streamlit.elements",
+        "--hidden-import=streamlit.components",
+        "--hidden-import=streamlit.caching",
+        # 异步和运行时
         "--hidden-import=asyncio",
+        "--hidden-import=concurrent.futures",
+        "--hidden-import=threading",
+        # 项目模块
         "--hidden-import=rewriter.ai_humanizer",
         "--hidden-import=platforms.wechat",
         "--hidden-import=platforms.feishu",
         "--hidden-import=platforms.xiaohongshu",
+        # Playwright
         "--hidden-import=playwright._impl",
+        "--hidden-import=playwright.async_api",
+        # 其他可能需要的
+        "--hidden-import=pkg_resources.py2_warn",
+        "--hidden-import=pkg_resources.metadata",
+
+        # 收集所有Streamlit模块
+        "--collect-all", "streamlit",
 
         f"--add-data={base_dir}/ui{os.pathsep}ui",
         f"--add-data={base_dir}/platforms{os.pathsep}platforms",
